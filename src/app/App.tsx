@@ -265,6 +265,162 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
 
+      {/* ═══════════════════════════════════════ NAV ═══ */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <nav className={`transition-all duration-300 ${
+          scrolled
+            ? "bg-white/98 backdrop-blur-xl shadow-lg shadow-sky-900/8 border-b border-sky-100"
+            : "bg-gradient-to-b from-[#0a1628]/80 to-transparent backdrop-blur-sm"
+        }`}>
+          <div className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between gap-4">
+
+            {/* Brand mark */}
+            <button
+              onClick={() => scrollTo("#top")}
+              className="flex items-center gap-3 group flex-shrink-0"
+            >
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:bg-sky-600 group-hover:scale-95 transition-all">
+                <svg viewBox="0 0 34 26" fill="none" className="w-7 h-6" aria-hidden="true">
+                  <path d="M2 16 L17 3 L32 16" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M6 14 L6 24 L28 24 L28 14" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <rect x="14" y="17" width="6" height="7" rx="1.2" fill="white" opacity="0.95" />
+                </svg>
+              </div>
+              <div className="leading-none">
+                <div
+                  className={`font-black uppercase transition-colors ${scrolled ? "text-[#0a1628]" : "text-white"}`}
+                  style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "18px", letterSpacing: "0.07em", lineHeight: 1 }}
+                >
+                  Summit Mabati
+                </div>
+                <div
+                  className={`text-[9px] uppercase tracking-[0.28em] font-bold transition-colors mt-0.5 ${scrolled ? "text-primary" : "text-sky-300"}`}
+                  style={{ fontFamily: "'DM Mono', monospace", lineHeight: 1 }}
+                >
+                  Factory · Kenya
+                </div>
+              </div>
+            </button>
+
+            {/* Centre nav links */}
+            <div className="hidden lg:flex items-center gap-0.5">
+              {NAV_LINKS.map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => scrollTo(link.href)}
+                  className={`relative px-3.5 py-2.5 text-[13px] font-semibold rounded-lg transition-all group ${
+                    scrolled
+                      ? "text-[#0a1628]/75 hover:text-primary hover:bg-sky-50"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  {link.label}
+                  <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-primary rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+                </button>
+              ))}
+            </div>
+
+            {/* Right actions */}
+            <div className="hidden md:flex items-center gap-2.5 flex-shrink-0">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-bold border-2 transition-all min-h-[44px] ${
+                  scrolled
+                    ? "border-[#25D366] text-[#25D366] bg-green-50 hover:bg-green-100"
+                    : "border-green-400/60 text-green-300 bg-green-500/10 hover:bg-green-500/20"
+                }`}
+                style={{ fontFamily: "'DM Mono', monospace" }}
+                aria-label="Chat on WhatsApp"
+              >
+                <MessageCircle size={13} />
+                WhatsApp
+              </a>
+              <a
+                href={`tel:${PHONE}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-semibold border transition-all min-h-[44px] ${
+                  scrolled
+                    ? "border-sky-200 text-primary bg-sky-50 hover:bg-sky-100"
+                    : "border-white/25 text-white bg-white/10 hover:bg-white/20"
+                }`}
+                style={{ fontFamily: "'DM Mono', monospace" }}
+              >
+                <Phone size={12} />
+                {PHONE_DISPLAY}
+              </a>
+              <button
+                onClick={() => scrollTo("#contact")}
+                className="bg-primary text-white px-5 py-2.5 text-[13px] font-bold rounded-xl hover:bg-sky-700 active:scale-95 transition-all shadow-lg shadow-primary/25 min-h-[44px]"
+                style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.07em" }}
+              >
+                GET A QUOTE
+              </button>
+            </div>
+
+            {/* Mobile hamburger */}
+            <button
+              className={`md:hidden p-2 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${scrolled ? "text-foreground hover:bg-sky-50" : "text-white hover:bg-white/10"}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile drawer */}
+        <div
+          className="md:hidden bg-white border-b border-sky-100 shadow-2xl overflow-hidden transition-all duration-300"
+          style={{ maxHeight: menuOpen ? 520 : 0, opacity: menuOpen ? 1 : 0 }}
+        >
+          <div className="px-5 pt-4 pb-6 flex flex-col gap-0.5">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.label}
+                onClick={() => scrollTo(link.href)}
+                className="text-left text-[#0a1628] font-semibold py-3 px-4 rounded-xl hover:bg-sky-50 hover:text-primary transition-colors text-sm flex items-center justify-between group min-h-[44px]"
+              >
+                {link.label}
+                <ChevronRight size={15} className="text-muted-foreground group-hover:text-primary transition-colors" />
+              </button>
+            ))}
+            <div className="pt-4 border-t border-sky-100 mt-2 flex flex-col gap-2.5">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 rounded-xl text-sm font-bold shadow-md min-h-[44px]"
+              >
+                <MessageCircle size={16} /> Chat on WhatsApp
+              </a>
+              <a
+                href={`tel:${PHONE}`}
+                className="flex items-center justify-center gap-2 border-2 border-primary text-primary py-2.5 rounded-xl text-sm font-semibold hover:bg-sky-50 transition-colors min-h-[44px]"
+              >
+                <Phone size={15} /> {PHONE_DISPLAY}
+              </a>
+              <button
+                onClick={() => scrollTo("#contact")}
+                className="bg-primary text-white py-3 rounded-xl font-bold text-sm shadow-md min-h-[44px]"
+              >
+                Get a Free Quote
+              </button>
+              <div className="flex items-center justify-center gap-4 pt-1">
+                <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[#1877F2] text-xs font-semibold hover:underline min-h-[44px]">
+                  <Facebook size={14} /> Facebook
+                </a>
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[#E1306C] text-xs font-semibold hover:underline min-h-[44px]">
+                  <Instagram size={14} /> Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
       {/* ═══════════════════════════════════════ HERO ═══ */}
       <section
         id="top"
